@@ -1,149 +1,159 @@
-/* General Styles */
+/* Futuristic Cyber-Minimalist Theme */
+
+:root {
+  --bg-dark: #05070a;
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --accent-cyan: #00f2ff;
+  --accent-purple: #7000ff;
+  --text-main: #e2e8f0;
+  --text-dim: #94a3b8;
+  --glow: 0 0 15px rgba(0, 242, 255, 0.4);
+}
+
 html, body {
   height: 100%;
   margin: 0;
+  background-color: var(--bg-dark);
+  /* Animated subtle mesh gradient background */
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(112, 0, 255, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(0, 242, 255, 0.1) 0px, transparent 50%);
+  background-attachment: fixed;
 }
 
 body {
   display: flex;
   flex-direction: column;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  background-color: #f8fafc;           /* very light cool gray */
-  color: #1f2937;                      /* dark slate */
-  line-height: 1.6;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  color: var(--text-main);
+  line-height: 1.7;
 }
 
-/* Header */
+/* Header - Floating Glass Style */
 header {
-  background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
-  color: #f1f5f9;
-  padding: 40px 20px;
+  padding: 60px 20px;
   text-align: center;
-  box-shadow: 0 4px 6px -2px rgba(0,0,0,0.1);
 }
 
 header h1 {
   margin: 0;
-  font-size: 2.8em;
-  font-weight: 700;
-  letter-spacing: -0.5px;
+  font-size: 3.5em;
+  font-weight: 800;
+  letter-spacing: -2px;
+  background: linear-gradient(to right, var(--accent-cyan), #fff, var(--accent-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(var(--glow));
 }
 
 header p {
-  margin: 8px 0 0;
-  opacity: 0.9;
-  font-size: 1.1em;
+  margin: 10px 0 0;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  font-size: 0.8em;
 }
 
-/* Navigation */
+/* Navigation - Neon Bar */
 nav {
-  background: #334155;
-  padding: 14px;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--glass-border);
+  border-bottom: 1px solid var(--glass-border);
+  padding: 15px;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 nav a {
-  color: #e2e8f0;
-  margin: 0 18px;
+  color: var(--text-dim);
+  margin: 0 25px;
   text-decoration: none;
-  font-weight: 600;
-  font-size: 1.05em;
-  transition: color 0.2s ease;
+  font-weight: 500;
+  font-size: 0.9em;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
 }
 
 nav a:hover {
-  color: #67e8f9;                      /* bright cyan on hover */
+  color: var(--accent-cyan);
+  text-shadow: var(--glow);
 }
 
-/* Layout */
+/* Container */
 .container {
   flex: 1;
-  display: flex;
-  max-width: 1200px;
-  margin: 30px auto;
+  max-width: 900px; /* Slimmer for better readability */
+  margin: 50px auto;
   padding: 0 20px;
-  gap: 24px;
 }
 
-/* Blog Content */
-.content {
-  flex: 3;
-}
-
+/* Post Cards - Glassmorphism */
 .post {
-  background: #ffffff;
-  padding: 28px;
-  margin-bottom: 28px;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-  border-left: 4px solid #4ecdc4;      /* accent border */
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 40px;
+  margin-bottom: 40px;
+  border-radius: 20px;
+  border: 1px solid var(--glass-border);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border 0.3s ease;
 }
 
 .post:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  transform: scale(1.02);
+  border-color: rgba(0, 242, 255, 0.5);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
 }
 
 .post h2 {
   margin-top: 0;
-  color: #0f766e;                     /* dark teal for titles */
-  font-size: 1.85em;
+  color: #fff;
+  font-size: 2em;
 }
 
 .post h3 {
-  color: #0e7490;
-  margin-top: 1.6em;
+  color: var(--accent-cyan);
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 10px;
+  display: inline-block;
 }
 
 .post small {
-  color: #6b7280;
-  font-style: italic;
+  color: var(--accent-purple);
+  font-weight: bold;
+  letter-spacing: 1px;
 }
 
-/* Sidebar (if you add it later) */
-.sidebar {
-  flex: 0 0 300px;
-  align-self: flex-start;
-  background: #ffffff;
-  padding: 24px;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-}
-
-/* Lists in About page */
+/* Lists */
 ul {
-  padding-left: 1.4em;
+  list-style: none;
+  padding-left: 0;
 }
 
 ul li {
-  margin: 10px 0;
-  font-size: 1.05em;
+  padding: 12px 15px;
+  background: rgba(255, 255, 255, 0.02);
+  margin-bottom: 8px;
+  border-radius: 8px;
+  border-left: 3px solid var(--accent-purple);
 }
 
-ul li strong {
-  color: #0f766e;
-}
-
-/* Links */
+/* Links & Interaction */
 a {
-  color: #0ea5e9;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-a:hover {
-  color: #0284c7;
-  text-decoration: underline;
+  color: var(--accent-cyan);
+  transition: 0.3s;
 }
 
 /* Footer */
 footer {
-  background: #1e293b;
-  color: #cbd5e1;
+  padding: 40px;
   text-align: center;
-  padding: 20px;
-  margin-top: auto;
-  font-size: 0.95em;
+  color: var(--text-dim);
+  font-size: 0.8em;
+  border-top: 1px solid var(--glass-border);
 }
