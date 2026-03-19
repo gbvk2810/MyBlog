@@ -48,9 +48,49 @@
     .hard { border-color: #ff0055; color: #ff0055; }
 
     /* Mobile D-Pad */
-    .mobile-controls { display: grid; grid-template-areas: ". up ." "left down right"; gap: 10px; justify-content: center; margin: 15px auto; }
-    .ctrl-btn { width: 60px; height: 60px; background: rgba(112, 0, 255, 0.1); border: 2px solid #00f2ff; border-radius: 50%; color: #00f2ff; display: flex; align-items: center; justify-content: center; user-select: none; }
-    .btn-up { grid-area: up; } .btn-left { grid-area: left; } .btn-down { grid-area: down; } .btn-right { grid-area: right; }
+    /* Mobile D-Pad - Updated for larger buttons */
+	/* Fixed & Aligned Mobile D-Pad */
+	.mobile-controls { 
+	  display: grid; 
+	  /* Use specific grid template areas to force the diamond shape */
+	  grid-template-areas: 
+		".  up  ." 
+		"left down right"; 
+	  grid-template-columns: repeat(3, 85px); /* Forces 3 equal columns */
+	  grid-template-rows: repeat(2, 85px);    /* Forces 2 equal rows */
+	  gap: 15px; 
+	  justify-content: center; 
+	  align-content: center;
+	  margin: 30px auto; 
+	  width: min-content; /* Prevents the container from stretching wider than the buttons */
+	}
+
+	.ctrl-btn { 
+	  width: 85px;  
+	  height: 85px; 
+	  background: rgba(112, 0, 255, 0.15); 
+	  border: 3px solid #00f2ff; 
+	  border-radius: 50%; 
+	  color: #00f2ff; 
+	  display: flex; 
+	  align-items: center; 
+	  justify-content: center; 
+	  user-select: none; 
+	  font-size: 2em;
+	  transition: transform 0.1s, background 0.2s;
+	  box-sizing: border-box; /* Ensures padding/border doesn't add to the width */
+	}
+
+	/* Explicitly assigning the buttons to the grid areas */
+	.btn-up    { grid-area: up; } 
+	.btn-left  { grid-area: left; } 
+	.btn-down  { grid-area: down; } 
+	.btn-right { grid-area: right; }
+
+	.ctrl-btn:active {
+	  transform: scale(0.9);
+	  background: rgba(0, 242, 255, 0.4);
+	}
   </style>
 </head>
 <body>
