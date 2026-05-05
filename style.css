@@ -1,0 +1,163 @@
+/* Premium Futuristic Theme & Glassmorphism 3.0 */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@500;600;700&family=Space+Grotesk:wght@300;400;500;600&display=swap');
+
+:root {
+    /* Explosive multi-colored cursor glow */
+    --cursor-glow: radial-gradient(circle, rgba(0, 242, 255, 0.6) 0%, rgba(255, 0, 255, 0.3) 40%, rgba(255, 255, 0, 0.1) 60%, rgba(255, 255, 255, 0) 80%);
+}
+
+body {
+    overscroll-behavior-y: none;
+    background-color: #010103;
+    background-image: url('Test.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+#cursor-light {
+    background: var(--cursor-glow);
+    transform: translate(-50%, -50%);
+    will-change: transform, opacity;
+    mix-blend-mode: screen;
+}
+
+.noise-overlay {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    opacity: 0.15;
+}
+
+/* Premium Glass panels (Nav, Footer) */
+.glass-panel {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.005));
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Premium Glass Cards (Content) */
+.glass-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
+    transform-style: preserve-3d;
+    will-change: transform;
+    position: relative;
+    border-radius: 1.5rem; /* Match tailwind 2xl */
+}
+
+/* The true secret to futuristic mockup cards: gradient glowing borders on hover */
+.glass-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px; /* Border thickness */
+    background: linear-gradient(45deg, #00f2ff, #ff00ff, #ffff00);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.glass-card:hover::before {
+    opacity: 1;
+}
+
+/* Orbs removed in favor of static image background */
+
+/* Text glow utilities */
+.text-glow-cyan { text-shadow: 0 0 15px rgba(0, 242, 255, 0.8); }
+.text-glow-magenta { text-shadow: 0 0 15px rgba(255, 0, 255, 0.8); }
+
+.perspective-1000 {
+    perspective: 1000px;
+}
+
+.char, .word {
+    display: inline-block;
+    will-change: transform, opacity;
+}
+
+/* Force letter spacing on hero headings to prevent GSAP char-split clustering */
+.hero-title {
+    letter-spacing: 0.08em;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    padding: 0.2em 0; /* Add vertical buffer to prevent clipping */
+}
+
+/* ═══════════════════════════════════════════════════
+   UNIQUE HERO HEADING ANIMATIONS — one per page
+═══════════════════════════════════════════════════ */
+
+/* HOME — neonWave: cyan → magenta → yellow ripple */
+@keyframes neonWave {
+    0%, 100% { color: #00f2ff; text-shadow: 0 0 14px rgba(0,242,255,0.9), 0 0 30px rgba(0,242,255,0.4); }
+    33%       { color: #ff00ff; text-shadow: 0 0 14px rgba(255,0,255,0.9), 0 0 30px rgba(255,0,255,0.4); }
+    66%       { color: #ffff00; text-shadow: 0 0 14px rgba(255,255,0,0.9), 0 0 30px rgba(255,255,0,0.4); }
+}
+.title-home .char {
+    animation: neonWave 3s linear infinite;
+    animation-delay: calc(var(--i, 0) * 0.1s);
+}
+
+/* ABOUT — plasmaFlow: electric blue → violet → white flash */
+@keyframes plasmaFlow {
+    0%, 100% { color: #3b82f6; text-shadow: 0 0 14px rgba(59,130,246,0.9), 0 0 30px rgba(59,130,246,0.4); }
+    33%       { color: #a855f7; text-shadow: 0 0 14px rgba(168,85,247,0.9), 0 0 30px rgba(168,85,247,0.4); }
+    66%       { color: #e0f2fe; text-shadow: 0 0 20px rgba(255,255,255,1),   0 0 40px rgba(255,255,255,0.5); }
+}
+.title-about .char {
+    animation: plasmaFlow 3s linear infinite;
+    animation-delay: calc(var(--i, 0) * 0.1s);
+}
+
+/* CONTACT — emberGlow: deep red → orange → gold flame */
+@keyframes emberGlow {
+    0%, 100% { color: #dc2626; text-shadow: 0 0 14px rgba(220,38,38,0.9),  0 0 30px rgba(220,38,38,0.4); }
+    33%       { color: #f97316; text-shadow: 0 0 14px rgba(249,115,22,0.9), 0 0 30px rgba(249,115,22,0.4); }
+    66%       { color: #fbbf24; text-shadow: 0 0 14px rgba(251,191,36,0.9), 0 0 30px rgba(251,191,36,0.4); }
+}
+.title-contact .char {
+    animation: emberGlow 3s linear infinite;
+    animation-delay: calc(var(--i, 0) * 0.1s);
+}
+
+/* GAME — matrixPulse: matrix green → cyan → white */
+@keyframes matrixPulse {
+    0%, 100% { color: #00ff41; text-shadow: 0 0 14px rgba(0,255,65,0.9),   0 0 30px rgba(0,255,65,0.4); }
+    33%       { color: #00f2ff; text-shadow: 0 0 14px rgba(0,242,255,0.9),  0 0 30px rgba(0,242,255,0.4); }
+    66%       { color: #ffffff; text-shadow: 0 0 20px rgba(255,255,255,1),  0 0 40px rgba(255,255,255,0.5); }
+}
+.title-game .char {
+    animation: matrixPulse 3s linear infinite;
+    animation-delay: calc(var(--i, 0) * 0.1s);
+}
+
+/* Subheadings use Rajdhani */
+h2, h3 {
+    font-family: 'Rajdhani', sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

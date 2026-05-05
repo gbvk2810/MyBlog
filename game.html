@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cyber Highway - Difficulty Modes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: '#010103',
+                        foreground: '#ffffff',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        #game-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            height: 500px;
+            margin: 0 auto;
+            background: #010103; 
+            border-radius: 12px;
+            overflow: hidden;
+            -webkit-mask-image: -webkit-radial-gradient(white, black);
+            mask-image: radial-gradient(white, black);
+            border: 1px solid rgba(0, 242, 255, 0.3);
+            box-shadow: 0 0 40px rgba(0, 242, 255, 0.2);
+            touch-action: none;
+            z-index: 2;
+        }
+        canvas { display: block; width: 100%; height: 100%; }
+        
+        #overlay { 
+            position: absolute; inset: 0; 
+            background: rgba(0,0,0,0.85); 
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            display: flex; flex-direction: column; 
+            align-items: center; justify-content: center;
+            text-align: center;
+            z-index: 10; color: #fff; font-family: sans-serif;
+        }
+
+        .mode-container { display: flex; gap: 12px; margin-top: 25px; }
+        
+        .mode-btn {
+            padding: 12px 18px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            cursor: pointer;
+            border-radius: 12px;
+            font-weight: bold;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+        }
+
+        .mode-btn:hover { background: rgba(255, 255, 255, 0.15); transform: translateY(-3px); }
+        .easy { border-color: #00ff88; color: #00ff88; text-shadow: 0 0 15px rgba(0,255,136,0.8); box-shadow: 0 0 20px rgba(0,255,136,0.2) inset, 0 0 20px rgba(0,255,136,0.2); }
+        .medium { border-color: #ffcc00; color: #ffcc00; text-shadow: 0 0 15px rgba(255,204,0,0.8); box-shadow: 0 0 20px rgba(255,204,0,0.2) inset, 0 0 20px rgba(255,204,0,0.2); }
+        .hard { border-color: #ff0055; color: #ff0055; text-shadow: 0 0 15px rgba(255,0,85,0.8); box-shadow: 0 0 20px rgba(255,0,85,0.2) inset, 0 0 20px rgba(255,0,85,0.2); }
+
+        .mobile-controls { 
+            display: grid; 
+            grid-template-areas: 
+            ".  up  ." 
+            "left down right"; 
+            grid-template-columns: repeat(3, 75px); 
+            grid-template-rows: repeat(2, 75px);   
+            gap: 15px; 
+            justify-content: center; 
+            align-content: center;
+            margin: 40px auto 10px; 
+            width: min-content;
+            position: relative;
+            z-index: 2;
+        }
+
+        .ctrl-btn { 
+            width: 75px;  
+            height: 75px; 
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(0, 242, 255, 0.4); 
+            border-top: 1px solid rgba(0, 242, 255, 0.8);
+            border-radius: 50%; 
+            color: #fff; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            user-select: none; 
+            font-size: 1.8em;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-sizing: border-box;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-up    { grid-area: up; } 
+        .btn-left  { grid-area: left; } 
+        .btn-down  { grid-area: down; } 
+        .btn-right { grid-area: right; }
+
+        .ctrl-btn:active {
+            transform: scale(0.85);
+            background: rgba(0, 242, 255, 0.4);
+            border-color: #fff;
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.8);
+            color: #010103;
+        }
+    </style>
+</head>
+<body class="bg-background text-foreground overflow-x-hidden antialiased font-sans selection:bg-cyan-500/30 flex flex-col min-h-screen">
+    <!-- Ambient Background is now controlled via style.css body background-image -->
+
+    <!-- Noise Overlay -->
+    <div class="noise-overlay fixed inset-0 z-50"></div>
+
+    <!-- Global Cursor Light -->
+    <div id="cursor-light" class="pointer-events-none fixed top-0 left-0 w-[300px] h-[300px] rounded-full mix-blend-screen opacity-0 transition-opacity duration-300 z-0"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-40 glass-panel px-6 py-6 flex justify-center gap-10">
+        <a href="index.html" class="text-base font-semibold tracking-widest uppercase text-gray-400 hover:text-white hover:text-glow-cyan transition-all">Home</a>
+        <a href="game.html" class="text-base font-semibold tracking-widest uppercase text-white text-glow-cyan transition-all">Game</a>
+        <a href="about.html" class="text-base font-semibold tracking-widest uppercase text-gray-400 hover:text-white hover:text-glow-cyan transition-all">About Me</a>
+        <a href="contact.html" class="text-base font-semibold tracking-widest uppercase text-gray-400 hover:text-white hover:text-glow-cyan transition-all">Contact</a>
+    </nav>
+
+    <main class="relative z-10 flex-grow pt-20 pb-12 px-6" id="main-container">
+        <div class="max-w-3xl mx-auto flex flex-col items-center relative z-10">
+            
+            <div class="text-center mb-6 hero-content">
+                <h1 class="text-3xl md:text-4xl font-extrabold uppercase mb-2 hero-title title-game">
+                    Cyber Highway
+                </h1>
+                <p class="text-gray-300 text-sm md:text-base font-medium hero-subtitle opacity-0">Dodge the traffic, beat the high score.</p>
+            </div>
+
+            <div class="glass-card p-4 md:p-6 rounded-xl w-full max-w-lg relative overflow-hidden group">
+                <div class="relative z-10">
+                    <div id="game-container">
+                        <div id="ui" style="position:absolute; top:20px; left:20px; color:#fff; font-weight:bold; z-index:5; font-family: monospace; font-size: 1.4rem; text-shadow: 0 0 10px rgba(0,242,255,1);">
+                            SCORE: <span id="scoreVal" class="text-cyan-400">0</span>
+                        </div>
+                        <div id="overlay">
+                            <h2 style="text-align:center; width:100%; letter-spacing:0.15em;" class="text-3xl font-extrabold mb-4 text-cyan-400 text-glow-cyan">SELECT SYSTEM MODE</h2>
+                            <div class="mode-container">
+                                <button class="mode-btn easy" onclick="startGame('easy')">EASY</button>
+                                <button class="mode-btn medium" onclick="startGame('medium')">MEDIUM</button>
+                                <button class="mode-btn hard" onclick="startGame('hard')">HARD</button>
+                            </div>
+                        </div>
+                        <canvas id="gameCanvas"></canvas>
+                    </div>
+
+                    <div class="mobile-controls">
+                        <div class="ctrl-btn btn-up" id="ctrl-w">▲</div>
+                        <div class="ctrl-btn btn-left" id="ctrl-a">◀</div>
+                        <div class="ctrl-btn btn-down" id="ctrl-s">▼</div>
+                        <div class="ctrl-btn btn-right" id="ctrl-d">▶</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="py-8 text-center text-gray-400 glass-panel relative z-10 mt-auto">
+        <p class="text-sm tracking-wider">&copy; 2026 GBVK. All rights reserved.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="main.js"></script>
+    <script>
+        // Game Logic Setup
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreEl = document.getElementById('scoreVal');
+        const overlay = document.getElementById('overlay');
+
+        canvas.width = 400; canvas.height = 500;
+
+        let score = 0, gameActive = false, worldSpeed = 8, lineOffset = 0, spawnRate = 0.02;
+        const lanes = [80, 200, 320];
+        let currentLane = 1, traffic = [], keys = {};
+        let player = { x: lanes[1], y: 400, speedY: 6 };
+
+        const difficulty = {
+            easy: { speed: 6, spawn: 0.015, color: "#00ff88" },
+            medium: { speed: 10, spawn: 0.03, color: "#ffcc00" },
+            hard: { speed: 15, spawn: 0.05, color: "#ff0055" }
+        };
+
+        function moveLeft() { if(currentLane > 0) currentLane--; }
+        function moveRight() { if(currentLane < 2) currentLane++; }
+
+        window.addEventListener("keydown", e => {
+            const key = e.key.toLowerCase();
+            if(key === 'arrowleft' || key === 'a') moveLeft();
+            if(key === 'arrowright' || key === 'd') moveRight();
+            keys[key] = true;
+            if(["ArrowUp","ArrowDown"].includes(e.key)) e.preventDefault();
+        });
+        window.addEventListener("keyup", e => keys[e.key.toLowerCase()] = false);
+
+        const bindBtn = (id, key, action) => {
+            const btn = document.getElementById(id);
+            if (!btn) return;
+            btn.addEventListener('touchstart', (e) => { e.preventDefault(); if(action) action(); keys[key] = true; });
+            btn.addEventListener('touchend', (e) => { e.preventDefault(); keys[key] = false; });
+        };
+        bindBtn('ctrl-w', 'w'); bindBtn('ctrl-a', 'a', moveLeft);
+        bindBtn('ctrl-s', 's'); bindBtn('ctrl-d', 'd', moveRight);
+
+        window.startGame = function(mode) { // Exporting to global to work with inline onclick
+            const settings = difficulty[mode];
+            worldSpeed = settings.speed;
+            spawnRate = settings.spawn;
+            player.speedY = settings.speed * 0.8;
+            
+            overlay.style.display = 'none';
+            gameActive = true;
+            score = 0; traffic = []; currentLane = 1; player.y = 400;
+            scoreEl.style.color = settings.color;
+            scoreEl.style.textShadow = `0 0 15px ${settings.color}`;
+            requestAnimationFrame(draw);
+        };
+
+        function update() {
+            if (!gameActive) return;
+
+            player.x += (lanes[currentLane] - player.x) * 0.25; 
+            if ((keys['arrowup'] || keys['w']) && player.y > 50) player.y -= player.speedY;
+            if ((keys['arrowdown'] || keys['s']) && player.y < canvas.height - 50) player.y += player.speedY;
+
+            lineOffset += worldSpeed;
+            if (lineOffset > 60) lineOffset = 0;
+
+            for (let i = traffic.length - 1; i >= 0; i--) {
+                let t = traffic[i];
+                t.y += (worldSpeed - (worldSpeed * 0.4));
+
+                if (Math.abs(player.x - t.x) < 35 && Math.abs(player.y - t.y) < 65) {
+                    gameActive = false;
+                    overlay.style.display = 'flex';
+                    overlay.innerHTML = `<h2 class="text-4xl font-extrabold mb-4 tracking-widest text-fuchsia-500 text-glow-magenta">SYSTEM COLLAPSE</h2><p class="mb-6 text-xl font-medium">Score: ${score}</p><button class="mode-btn" style="border-color: #00f2ff; color: #00f2ff; box-shadow: 0 0 20px rgba(0,242,255,0.4) inset, 0 0 20px rgba(0,242,255,0.4);" onclick="location.reload()">REBOOT</button>`;
+                }
+
+                if (t.y > canvas.height + 100) {
+                    traffic.splice(i, 1);
+                    score += 5; 
+                    scoreEl.innerText = score;
+                    worldSpeed += 0.002; 
+                }
+            }
+
+            let lastCarY = traffic.length > 0 ? traffic[traffic.length - 1].y : 600;
+
+            if (lastCarY > 180) { 
+                if (Math.random() < spawnRate * 5) { 
+                    let safeLane = Math.floor(Math.random() * 3);
+                    for (let i = 0; i < 3; i++) {
+                        if (i !== safeLane) {
+                            traffic.push({ 
+                                x: lanes[i], 
+                                y: -100, 
+                                color: '#1a053a' // Dark purple traffic cars
+                            });
+                        }
+                    }
+                }
+            }
+        }
+
+        function drawCar(x, y, color, isPlayer) {
+            ctx.save(); ctx.translate(x, y);
+            if(isPlayer) { ctx.shadowBlur = 30; ctx.shadowColor = color; }
+            ctx.fillStyle = color; ctx.fillRect(-20, -35, 40, 70); 
+            ctx.fillStyle = "rgba(0,0,0,0.8)"; ctx.fillRect(-15, -25, 30, 15);
+            ctx.fillStyle = isPlayer ? "#fff" : "#ff00ff"; ctx.fillRect(-18, -35, 10, 4); ctx.fillRect(8, -35, 10, 4);
+            ctx.fillStyle = "#ff0000"; ctx.fillRect(-18, 30, 8, 4); ctx.fillRect(10, 30, 8, 4);
+            ctx.restore();
+        }
+
+        function draw() {
+            if (!gameActive) return;
+            ctx.fillStyle = '#010103'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = 'rgba(255, 0, 255, 0.3)'; // Magenta lane dividers
+            [133, 266].forEach(x => {
+                ctx.setLineDash([30, 30]); ctx.lineDashOffset = -lineOffset;
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+            });
+            ctx.setLineDash([]);
+            drawCar(player.x, player.y, "#00f2ff", true); // Cyan player car
+            traffic.forEach(t => drawCar(t.x, t.y, t.color, false));
+            update(); requestAnimationFrame(draw);
+        }
+    </script>
+</body>
+</html>

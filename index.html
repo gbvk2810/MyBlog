@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Personal Blog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: '#010103',
+                        foreground: '#ffffff',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-background text-foreground overflow-x-hidden antialiased font-sans selection:bg-cyan-500/30 flex flex-col min-h-screen">
+    <!-- Ambient Background is now controlled via style.css body background-image -->
+
+    <!-- Noise Overlay -->
+    <div class="noise-overlay fixed inset-0 z-50"></div>
+
+    <!-- Global Cursor Light -->
+    <div id="cursor-light" class="pointer-events-none fixed top-0 left-0 w-[300px] h-[300px] rounded-full mix-blend-screen opacity-0 transition-opacity duration-300 z-0"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-40 glass-panel px-6 py-6 flex justify-center gap-10">
+        <a href="index.html" class="text-base font-semibold tracking-widest uppercase text-white text-glow-cyan transition-all">Home</a>
+        <a href="game.html" class="text-base font-semibold tracking-widest uppercase text-gray-400 hover:text-white hover:text-glow-cyan transition-all">Game</a>
+        <a href="about.html" class="text-base font-semibold tracking-widest uppercase text-gray-400 hover:text-white hover:text-glow-cyan transition-all">About Me</a>
+        <a href="contact.html" class="text-base font-semibold tracking-widest uppercase text-gray-400 hover:text-white hover:text-glow-cyan transition-all">Contact</a>
+    </nav>
+
+    <main class="relative z-10 flex-grow pt-16" id="main-container">
+        <!-- Hero Section -->
+        <section class="py-16 w-full flex flex-col justify-center items-center relative overflow-hidden" id="hero">
+            <div id="hero-image" class="absolute inset-0 z-0">
+                <!-- Removed black gradient overlay to let background image shine -->
+            </div>
+
+            <div class="z-10 text-center max-w-5xl px-6 hero-content pt-10">
+                <h1 class="text-4xl md:text-5xl font-extrabold tracking-wide uppercase mb-2 hero-title title-home">
+                    My Personal Blog
+                </h1>
+                <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto hero-subtitle opacity-0 font-medium">
+                    Sharing thoughts, ideas, and stories.
+                </p>
+            </div>
+        </section>
+
+        <!-- Command Center: Mission Sectors -->
+        <section class="pb-12 px-6 relative z-10" id="mission-control">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex items-center gap-4 mb-8 reveal-text opacity-0">
+                    <div class="h-[1px] flex-grow bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
+                    <h2 class="text-xs font-black tracking-[0.4em] uppercase text-cyan-400">Mission Sectors</h2>
+                    <div class="h-[1px] flex-grow bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Sector 01 -->
+                    <div class="glass-card group p-8 rounded-2xl relative overflow-hidden transition-all duration-500 hover:border-cyan-500/50 reveal-fade opacity-0">
+                        <div class="absolute top-0 right-0 p-4 font-mono text-[10px] text-cyan-500/30">SEC-01</div>
+                        <div class="w-12 h-12 mb-6 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3 tracking-tight">The Creative Void (Coming Soon)</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-6">Explorations in digital art, UI design, and visual storytelling. Where aesthetics meet code.</p>
+                        <a href="#" class="inline-flex items-center text-xs font-bold text-cyan-400 uppercase tracking-widest group-hover:gap-3 transition-all">Access Files <span class="ml-2">→</span></a>
+                    </div>
+
+                    <!-- Sector 02 -->
+                    <div class="glass-card group p-8 rounded-2xl relative overflow-hidden transition-all duration-500 hover:border-fuchsia-500/50 reveal-fade opacity-0">
+                        <div class="absolute top-0 right-0 p-4 font-mono text-[10px] text-fuchsia-500/30">SEC-02</div>
+                        <div class="w-12 h-12 mb-6 rounded-lg bg-fuchsia-500/10 flex items-center justify-center text-fuchsia-400 group-hover:scale-110 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3 tracking-tight">Binary Bastion (Coming Soon)</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-6">Deep dives into full-stack development, architectural patterns, and system optimization.</p>
+                        <a href="#" class="inline-flex items-center text-xs font-bold text-fuchsia-400 uppercase tracking-widest group-hover:gap-3 transition-all">Initialize Stream <span class="ml-2">→</span></a>
+                    </div>
+
+                    <!-- Sector 03 -->
+                    <div class="glass-card group p-8 rounded-2xl relative overflow-hidden transition-all duration-500 hover:border-yellow-500/50 reveal-fade opacity-0">
+                        <div class="absolute top-0 right-0 p-4 font-mono text-[10px] text-yellow-500/30">SEC-03</div>
+                        <div class="w-12 h-12 mb-6 rounded-lg bg-yellow-500/10 flex items-center justify-center text-yellow-400 group-hover:scale-110 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4v-3a2 2 0 00-2-2H5z" /></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3 tracking-tight">Arcade Dimension (Coming Soon)</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-6">Gaming chronicles, high-score tactics, and the evolution of interactive entertainment.</p>
+                        <a href="game.html" class="inline-flex items-center text-xs font-bold text-yellow-400 uppercase tracking-widest group-hover:gap-3 transition-all">Enter Simulation <span class="ml-2">→</span></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Intel Feed -->
+        <section class="py-20 px-6 relative z-10 bg-black/20">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-2xl font-black uppercase mb-12 flex items-center gap-4 reveal-text opacity-0">
+                    <span class="w-2 h-8 bg-cyan-500"></span>
+                    Recent Intel Decrypts
+                </h2>
+                
+                <div class="space-y-6">
+                    <!-- Intel Block 1 -->
+                    <div class="glass-card p-1 rounded-xl group transition-all duration-300 hover:bg-white/5 reveal-fade opacity-0">
+                        <div class="p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div class="flex items-center gap-6">
+                                <div class="text-xs font-mono text-cyan-500/60 uppercase tracking-tighter">05 MAY 2026</div>
+                                <h4 class="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors">Tactical UI: The Future of Cyber-Aesthetics</h4>
+                            </div>
+                            <div class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] border border-gray-800 px-3 py-1 rounded">Classified</div>
+                        </div>
+                    </div>
+
+                    <!-- Intel Block 2 -->
+                    <div class="glass-card p-1 rounded-xl group transition-all duration-300 hover:bg-white/5 reveal-fade opacity-0">
+                        <div class="p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div class="flex items-center gap-6">
+                                <div class="text-xs font-mono text-cyan-500/60 uppercase tracking-tighter">02 MAY 2026</div>
+                                <h4 class="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors">Neural Link Protocols in Modern JS</h4>
+                            </div>
+                            <div class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] border border-gray-800 px-3 py-1 rounded">Open Access</div>
+                        </div>
+                    </div>
+
+                    <!-- Intel Block 3 -->
+                    <div class="glass-card p-1 rounded-xl group transition-all duration-300 hover:bg-white/5 reveal-fade opacity-0">
+                        <div class="p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div class="flex items-center gap-6">
+                                <div class="text-xs font-mono text-cyan-500/60 uppercase tracking-tighter">28 APR 2026</div>
+                                <h4 class="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors">Optimizing the Grid: High-Score Strategies</h4>
+                            </div>
+                            <div class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] border border-gray-800 px-3 py-1 rounded">Encrypted</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-8 text-center text-gray-400 glass-panel relative z-10 mt-auto">
+        <p class="text-sm tracking-wider">&copy; 2026 GBVK. All rights reserved.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
